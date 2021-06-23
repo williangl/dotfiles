@@ -18,3 +18,6 @@ doc: https://denysdovhan.com/spaceship-prompt/docs/Troubleshooting.html
 zsh-autpsuggestion: https://github.com/zsh-users/zsh-autosuggestions#installation
 
 zsh-syntax-highlighting: https://github.com/zsh-users/zsh-syntax-highlighting#how-to-install
+
+If you have some issues with rendering emojis on prompt install 
+`aur/noto-fonts-emoji-apple`
