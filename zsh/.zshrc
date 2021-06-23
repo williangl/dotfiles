@@ -108,3 +108,34 @@ source $ZSH/oh-my-zsh.sh
 
 #syntax highlight
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Android
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH=$PATH:$ANDROID_HOME
+
+# Flutter
+export PATH="$PATH:/opt/flutter/bin"
+
+# US keyboard
+setxkbmap -model abnt -layout us -variant intl
+
+# Atom config
+ATOM_DEV_RESOURCE_PATH=/opt/atom
+
+# Poetry
+fpath+=~/.zfunc
+
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+# fnm
+export PATH=$HOME/.fnm:$PATH
+eval "$(fnm env)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/willian/.sdkman"
+[[ -s "/home/willian/.sdkman/bin/sdkman-init.sh" ]] && source "/home/willian/.sdkman/bin/sdkman-init.sh"
+
