@@ -135,7 +135,13 @@ eval "$(pyenv init -)"
 export PATH=$HOME/.fnm:$PATH
 eval "$(fnm env)"
 
+# Cisco AnyConnect
+export PATH=$PATH:/opt/cisco/anyconnect/bin
+alias anyconnect='vpnui'
+
+# Overides cat command to use bat
+alias cat='bat'
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/willian/.sdkman"
 [[ -s "/home/willian/.sdkman/bin/sdkman-init.sh" ]] && source "/home/willian/.sdkman/bin/sdkman-init.sh"
-
