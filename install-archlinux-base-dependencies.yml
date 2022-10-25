@@ -1,0 +1,132 @@
+---
+- hosts: localhost
+  roles:
+  - kewlfft.aur
+  become: yes
+  become_user: "{{ lookup('env', 'USER') }}"
+  become_method: sudo
+  tasks:
+
+  # Base configuration
+  - name: Install Git and build tools
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - git
+        - base-devel
+        - binutils
+        - make
+        - gcc
+        - pkg-config
+        - fakeroot
+
+  # Docker installation and configuration
+  - name: Install docker
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - docker
+        - docker-compose
+
+  - name: Ensure group "docker" exists with correct gid
+    become: yes
+    become_user: root
+    ansible.builtin.group:
+      name: docker
+      state: present
+
+  - name: Add the user to docker group
+    become: yes
+    become_user: root
+    ansible.builtin.user:
+      name: "{{ lookup('env', 'USER') }}"
+      group: docker
+
+  # Install Paru AUR Helper
+  - name: Git clone Paru AUR
+    ansible.builtin.git:
+      repo: https://aur.archlinux.org/paru.git
+      dest: ./paru
+
+  - name: Install Paru AUR
+    shell:
+      chdir: ./paru
+      cmd: makepkg -si --noconfirm
+
+  - name: Install Java
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - jdk-openjdk
+
+  - name: Install pyenv
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - pyenv
+
+  - name: Install fnm
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - fnm-bin
+
+  # Install and configure zsh
+  - name: install ZSH
+      become: yes
+      become_user: root
+      pacman:
+        update_cache: yes
+        name:
+          - zsh
+
+  - name: Install oh-my-zsh
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - oh-my-zsh-git
+
+  - name: Install zsh autosuggestions
+    become: yes
+    become_user: root
+    pacman:
+      name:
+        - zsh-autosuggestions
+
+  - name: Install zsh syntax-highlighting
+    become: yes
+    become_user: root
+    pacman:
+      name:
+        - zsh-syntax-highlighting
+
+  - name: Install spaceship zsh theme
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - spaceship-prompt
+
+
+  - name: Git clone Paru AUR
+    ansible.builtin.git:
+      repo: https://github.com/williangl/dotfiles.git
+      dest: ./paru
+
+  - name: replace .zshrc
+    copy:
+      src: $pwd/zsh/.zsh
+      dest: "{{ lookup('env', 'HOME') }}"
