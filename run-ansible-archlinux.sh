@@ -8,8 +8,14 @@ ansible-galaxy collection install community.general
 echo "=== Install ansible galaxy AUR role ==="
 ansible-galaxy install kewlfft.aur
 
-echo "=== Running ansible ==="
+echo "=== Running ansible base ==="
 ansible-playbook install-archlinux-base-dependencies.yml --ask-become-pass
+
+echo "=== Running ansible music ==="
+ansible-playbook install-archlinux-music-dependencies.yml --ask-become-pass
+
+echo "=== Running ansible work ==="
+ansible-playbook install-archlinux-work-dependencies.yml --ask-become-pass
 
 echo "change the default shell for zsh"
 if [ $SHELL != '/usr/bin/zsh' ]
