@@ -1,0 +1,73 @@
+---
+- hosts: localhost
+  roles:
+  - kewlfft.aur
+  become: yes
+  become_user: "{{ lookup('env', 'USER') }}"
+  become_method: sudo
+  tasks:
+
+  - name: Install ardour
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - ardour
+
+  - name: Install PipeWire
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - pipewire
+        - pipewire-pulse
+        - pipewire-jack
+        - pipewire-alsa
+        - helvum
+
+  - name: Enable PipeWire
+    ansible.builtin.systemd:
+      scope: user
+      enabled: yes
+      state: started
+      name: pipewire
+
+  - name: Enable PipeWire-pulse
+    ansible.builtin.systemd:
+      scope: user
+      enabled: yes
+      state: started
+      name: pipewire-pulse
+
+  - name: Install lmms
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - lmms
+
+  - name: Install synths
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - guitarix
+        - hydrogen
+        - fluidsynth
+
+  - name: Install guitar plugins
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - tonelib-metal-bin
+        - tonelib-gfx-bin
+        - tonelib-jam-bin
+        - tonelib-zoom-bin
+        - tonelib-bass-drive-bin
+        - tonelib-tube-warmth-bin
