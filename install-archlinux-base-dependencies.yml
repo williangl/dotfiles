@@ -23,7 +23,7 @@
         - fakeroot
 
   # Docker installation and configuration
-  - name: Install docker
+  - name: Install Docker
     become: yes
     become_user: root
     pacman:
@@ -46,6 +46,14 @@
       name: "{{ lookup('env', 'USER') }}"
       group: docker
 
+  - name: Install Vagrant
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - vagrant
+
   # Install Paru AUR Helper
   - name: Git clone Paru AUR
     ansible.builtin.git:
@@ -56,6 +64,14 @@
     shell:
       chdir: ./paru
       cmd: makepkg -si --noconfirm
+
+  - name: Install VSCodium
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - vscodium-bin
 
   - name: Install Java
     become: yes
@@ -120,13 +136,21 @@
       name:
         - spaceship-prompt
 
-
-  - name: Git clone Paru AUR
+  # Overide zshrc
+  - name: clone dotfiles repository
     ansible.builtin.git:
       repo: https://github.com/williangl/dotfiles.git
-      dest: ./paru
+      dest: ./git
 
   - name: replace .zshrc
     copy:
-      src: $pwd/zsh/.zsh
+      src: "{{ lookup('env', 'HOME') }}"/git/zsh/.zshrc
       dest: "{{ lookup('env', 'HOME') }}"
+
+  - name: Install ytmdesktop
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    aur:
+      use: paru
+      name:
+        - ytmdesktop
