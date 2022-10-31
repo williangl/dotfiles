@@ -26,6 +26,9 @@ Start the virtual machine using Vagrant
 vagrant up
 ```
 
+***OBS: The Archlinux image used in vagrantfile don't have any GUI installed, so if needed you have to install it***
+
+
 Destroy the virtual machine
 ```bash
 vagrant destroy -f
