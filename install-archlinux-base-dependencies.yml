@@ -1,7 +1,4 @@
----
 - hosts: localhost
-  roles:
-  - kewlfft.aur
   become: yes
   become_user: "{{ lookup('env', 'USER') }}"
   become_method: sudo
@@ -21,6 +18,14 @@
         - gcc
         - pkg-config
         - fakeroot
+
+  - name: Install okular pdf
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - okular
 
   # Docker installation and configuration
   - name: Install Docker
@@ -68,7 +73,7 @@
   - name: Install VSCodium
     become: yes
     become_user: "{{ lookup('env', 'USER') }}"
-    aur:
+    kewlfft.aur.aur:
       use: paru
       name:
         - vscodium-bin
@@ -76,10 +81,18 @@
   - name: Install Java
     become: yes
     become_user: "{{ lookup('env', 'USER') }}"
-    aur:
+    kewlfft.aur.aur:
       use: paru
       name:
         - jdk-openjdk
+
+  - name: Install sdkmanager
+    become: yes
+    become_user: "{{ lookup('env', 'USER') }}"
+    kewlfft.aur.aur:
+      use: paru
+      name:
+        - sdkmanager
 
   - name: Install pyenv
     become: yes
@@ -92,24 +105,24 @@
   - name: Install fnm
     become: yes
     become_user: "{{ lookup('env', 'USER') }}"
-    aur:
+    kewlfft.aur.aur:
       use: paru
       name:
         - fnm-bin
 
   # Install and configure zsh
   - name: install ZSH
-      become: yes
-      become_user: root
-      pacman:
-        update_cache: yes
-        name:
-          - zsh
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - zsh
 
   - name: Install oh-my-zsh
     become: yes
     become_user: "{{ lookup('env', 'USER') }}"
-    aur:
+    kewlfft.aur.aur:
       use: paru
       name:
         - oh-my-zsh-git
@@ -131,7 +144,7 @@
   - name: Install spaceship zsh theme
     become: yes
     become_user: "{{ lookup('env', 'USER') }}"
-    aur:
+    kewlfft.aur.aur:
       use: paru
       name:
         - spaceship-prompt
@@ -140,17 +153,28 @@
   - name: clone dotfiles repository
     ansible.builtin.git:
       repo: https://github.com/williangl/dotfiles.git
-      dest: ./git
+      dest: "{{ lookup('env', 'HOME') }}/git"
 
   - name: replace .zshrc
     copy:
-      src: "{{ lookup('env', 'HOME') }}"/git/zsh/.zshrc
+      src: "{{ lookup('env', 'HOME') }}/git/zsh/.zshrc"
       dest: "{{ lookup('env', 'HOME') }}"
 
-  - name: Install ytmdesktop
-    become: yes
-    become_user: "{{ lookup('env', 'USER') }}"
-    aur:
-      use: paru
-      name:
-        - ytmdesktop
+  # - name: Install ytmdesktop
+  #   become: yes
+  #   become_user: "{{ lookup('env', 'USER') }}"
+  #   kewlfft.aur.aur:
+  #     extra_args: --noconfirm --ask yes
+  #     use: paru
+  #     name:
+  #       - ytmdesktop
+
+  # - name: Install stremio
+  #   become: yes
+  #   become_user: "{{ lookup('env', 'USER') }}"
+  #   kewlfft.aur.aur:
+  #     use: paru
+  #     extra_args: --ask yes
+  #     name:
+  #       - stremio
+  #       - pimpmystremio-bin
