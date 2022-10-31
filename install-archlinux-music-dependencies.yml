@@ -1,31 +1,32 @@
----
 - hosts: localhost
-  roles:
-  - kewlfft.aur
   become: yes
   become_user: "{{ lookup('env', 'USER') }}"
   become_method: sudo
   tasks:
 
-  - name: Install ardour
+  - name: Remove jack2
     become: yes
     become_user: root
     pacman:
       update_cache: yes
+      state: removed
+      force: yes
       name:
-        - ardour
+        - jack2
 
   - name: Install PipeWire
     become: yes
     become_user: root
     pacman:
       update_cache: yes
+      extra_args: --ask yes
       name:
         - pipewire
         - pipewire-pulse
         - pipewire-jack
         - pipewire-alsa
         - helvum
+        - carla
 
   - name: Enable PipeWire
     ansible.builtin.systemd:
@@ -41,6 +42,22 @@
       state: started
       name: pipewire-pulse
 
+  - name: Install pavucontrol
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - pavucontrol
+
+  - name: Install ardour
+    become: yes
+    become_user: root
+    pacman:
+      update_cache: yes
+      name:
+        - ardour
+
   - name: Install lmms
     become: yes
     become_user: root
@@ -49,25 +66,36 @@
       name:
         - lmms
 
-  - name: Install synths
+  - name: Install synths pacman
     become: yes
-    become_user: "{{ lookup('env', 'USER') }}"
-    aur:
-      use: paru
+    become_user: root
+    pacman:
+      update_cache: yes
       name:
-        - guitarix
+        - helm-synth
         - hydrogen
         - fluidsynth
+
+
+
+  # - name: Install synths aur
+  #   become: yes
+  #   become_user: "{{ lookup('env', 'USER') }}"
+  #   kewlfft.aur.aur:
+  #     use: paru
+  #     name:
+  #       - xxxx
 
   - name: Install guitar plugins
     become: yes
     become_user: "{{ lookup('env', 'USER') }}"
-    aur:
+    kewlfft.aur.aur:
       use: paru
       name:
-        - tonelib-metal-bin
-        - tonelib-gfx-bin
-        - tonelib-jam-bin
+        - guitarix
+        # - tonelib-metal-bin
+        # - tonelib-gfx-bin
+        # - tonelib-jam-bin
         - tonelib-zoom-bin
         - tonelib-bass-drive-bin
         - tonelib-tube-warmth-bin
