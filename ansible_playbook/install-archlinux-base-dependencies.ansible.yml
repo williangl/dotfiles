@@ -1,0 +1,224 @@
+- name: Install Archlinux Base Dependencies
+  hosts: localhost
+  become: true
+  become_user: "{{ lookup('env', 'USER') }}"
+  become_method: sudo
+  tasks:
+    # Base configuration
+    - name: Install Git and build tools
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - git
+          - base-devel
+          - binutils
+          - make
+          - gcc
+          - pkg-config
+          - fakeroot
+
+    - name: Install Terminator
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - terminator
+
+    - name: Install Okular PDF
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - okular
+
+    # Docker installation and configuration
+    - name: Install Docker
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - docker
+          - docker-compose
+
+    - name: Ensure group "docker" exists with correct gid
+      become: true
+      become_user: root
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add the user to docker group
+      become: true
+      become_user: root
+      ansible.builtin.user:
+        name: "{{ lookup('env', 'USER') }}"
+        group: docker
+
+    # - name: Install Vagrant
+    #   become: true
+    #   become_user: root
+    #   pacman:
+    #     update_cache: true
+    #     name:
+    #       - vagrant
+
+    # Install Paru AUR Helper
+    - name: Git clone Paru AUR
+      ansible.builtin.git:
+        repo: https://aur.archlinux.org/paru.git
+        dest: ./paru
+
+    - name: Install Paru AUR
+      ansible.builtin.shell:
+        chdir: ./paru
+        cmd: makepkg -si --noconfirm
+
+    # Install development dependencies
+    - name: Install Java
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - jdk-openjdk
+
+    - name: Install sdkmanager
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - sdkmanager
+
+    - name: Install FNM
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - fnm-bin
+
+    - name: Install Pyenv
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - pyenv
+
+    - name: Install PipX
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - python-pipx
+
+    - name: Install VSCodium
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - vscodium-bin
+
+    # Install and configure zsh
+    - name: Install ZSH
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - zsh
+
+    - name: Install oh-my-zsh
+      ansible.builtin.shell:
+        cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        executable: /bin/bash
+
+
+    - name: Install ZSH Autosuggestions
+      become: true
+      become_user: root
+      community.general.pacman:
+        name:
+          - zsh-autosuggestions
+
+    - name: Install ZSH Syntax-Highlighting
+      become: true
+      become_user: root
+      community.general.pacman:
+        name:
+          - zsh-syntax-highlighting
+
+    - name: Install spaceship zsh theme
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - spaceship-prompt
+
+    # Overide zshrc
+    - name: Clone Dotfiles Repository
+      ansible.builtin.git:
+        repo: https://github.com/williangl/dotfiles.git
+        dest: "{{ lookup('env', 'HOME') }}/git"
+
+    - name: Replace .zshrc
+      become_user: "{{ lookup('env', 'USER') }}"
+      ansible.builtin.copy:
+        src: "{{ lookup('env', 'HOME') }}/git/zsh/.zshrc"
+        dest: "{{ lookup('env', 'HOME') }}"
+        mode: preserve
+
+    - name: Install Python Poetry
+      community.general.pipx:
+        name: poetry
+
+    # - name: Configure Poetry Autocompletition On ZSH
+    #   ansible.builtin.shell:
+    #     cmd: |
+    #       mkdir $HOME/.oh-my-zsh/custom/plugins/poetry &&
+    #       poetry completions zsh > $HOME/.oh-my-zsh/custom/plugins/poetry/_poetry
+    #     executable: /bin/bash
+
+    - name: Install Authy 2FA
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - authy
+
+    - name: Install Telegram Desktop
+      become: true
+      become_user: root
+      community.general.pacman:
+        name:
+          - telegram-desktop
+
+
+    # - name: Install ytmdesktop
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     extra_args: --noconfirm --ask yes
+    #     use: paru
+    #     name:
+    #       - ytmdesktop
+
+    # - name: Install stremio
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     extra_args: --ask yes
+    #     name:
+    #       - stremio
+    #       - pimpmystremio-bin

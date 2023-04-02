@@ -1,0 +1,38 @@
+- name: Install Archlinux Game And Video Dependencies
+  hosts: localhost
+  become: true
+  become_user: "{{ lookup('env', 'USER') }}"
+  become_method: sudo
+  tasks:
+
+    - name: Install Lutris Game On Linux
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - lutris
+
+    - name: Install VLC
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - vlc
+
+    - name: Install MPV
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - mpv
+
+    - name: Install KDEconnect
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - kdeconnect

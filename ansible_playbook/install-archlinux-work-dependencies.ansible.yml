@@ -1,0 +1,67 @@
+- name: Install Archlinux Work Dependencies
+  hosts: localhost
+  become: true
+  become_user: "{{ lookup('env', 'USER') }}"
+  become_method: sudo
+  tasks:
+    - name: Install chromium browser
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - chromium
+
+    - name: Install Meld
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - meld
+
+    # - name: Install Slack
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   community.general.pacman:
+    #     executable: paru
+    #     name:
+    #       - slack-desktop
+
+    - name: Install MS Teams
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      kewlfft.aur.aur:
+        use: paru
+        name:
+          - teams
+
+    # - name: Install Cisco VPN
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - cisco-anyconnect
+
+    # - name: Prepare To Install Pritunl
+    #   become: true
+    #   ansible.builtin.shell:
+    #     cmd: |
+    #       sudo tee -a /etc/pacman.conf << EOF
+    #       [pritunl]
+    #       Server = https://repo.pritunl.com/stable/pacman
+    #       EOF
+    #       sudo pacman-key --keyserver hkp://keyserver.ubuntu.com -r 7568D9BB55FF9E5287D586017AE645C0CF8E292A
+    #       sudo pacman-key --lsign-key 7568D9BB55FF9E5287D586017AE645C0CF8E292A
+    #       sudo pacman -Sy
+    #     args:
+    #       executable: /bin/bash
+
+    # - name: Install Pritunl VPN
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - pritunl-client-electron
