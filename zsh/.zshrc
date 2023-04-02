@@ -76,6 +76,7 @@ plugins=(
 	adb
 	ansible
 	zsh-autosuggestions
+	poetry
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -114,7 +115,7 @@ export ANDROID_HOME="$HOME/Android/Sdk"
 export PATH=$PATH:$ANDROID_HOME
 
 # Flutter
-export PATH="$PATH:/opt/flutter/bin"
+# export PATH=$PATH:/opt/flutter/bin
 
 # US keyboard
 setxkbmap -model abnt -layout us -variant intl
@@ -135,6 +136,9 @@ eval "$(pyenv init -)"
 export PATH=$HOME/.fnm:$PATH
 eval "$(fnm env)"
 
+# ruby
+export PATH=$HOME/.gem/ruby/3.0.0/bin:$PATH
+
 # Cisco AnyConnect
 export PATH=$PATH:/opt/cisco/anyconnect/bin
 alias anyconnect='vpnui'
@@ -145,3 +149,4 @@ alias cat='bat'
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
