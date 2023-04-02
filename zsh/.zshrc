@@ -140,8 +140,8 @@ eval "$(fnm env)"
 export PATH=$HOME/.gem/ruby/3.0.0/bin:$PATH
 
 # Cisco AnyConnect
-export PATH=$PATH:/opt/cisco/anyconnect/bin
-alias anyconnect='vpnui'
+# export PATH=$PATH:/opt/cisco/anyconnect/bin
+# alias anyconnect='vpnui'
 
 # Overides cat command to use bat
 alias cat='bat'
@@ -149,4 +149,3 @@ alias cat='bat'
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
