@@ -12,7 +12,7 @@ sudo pacman -S --noconfirm ansible
 echo "\n"
 echo "\n"
 echo "=== Install ansible galaxy community packages ==="
-ansible-galaxy collection install -r ansible_playbook/requirements.yml
+ansible-galaxy collection install -r ansible_playbook/requirements.yml --force
 
 echo "\n"
 echo "\n"
