@@ -3,6 +3,7 @@
   become: true
   become_user: "{{ lookup('env', 'USER') }}"
   become_method: sudo
+  ignore_errors: true
   tasks:
     - name: Install chromium browser
       become: true
