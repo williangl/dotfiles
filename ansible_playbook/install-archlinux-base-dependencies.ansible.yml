@@ -3,6 +3,7 @@
   become: true
   become_user: "{{ lookup('env', 'USER') }}"
   become_method: sudo
+  ignore_errors: true
   tasks:
     # Base configuration
     - name: Install Git and build tools
@@ -165,15 +166,10 @@
           - spaceship-prompt
 
     # Overide zshrc
-    - name: Clone Dotfiles Repository
-      ansible.builtin.git:
-        repo: https://github.com/williangl/dotfiles.git
-        dest: "{{ lookup('env', 'HOME') }}/git"
-
     - name: Replace .zshrc
       become_user: "{{ lookup('env', 'USER') }}"
       ansible.builtin.copy:
-        src: "{{ lookup('env', 'HOME') }}/git/zsh/.zshrc"
+        src: "./zsh/.zshrc"
         dest: "{{ lookup('env', 'HOME') }}"
         mode: preserve
 
