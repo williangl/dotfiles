@@ -9,3 +9,4 @@
 # local folders
 paru/
 .vagrant/
+.vscode/
