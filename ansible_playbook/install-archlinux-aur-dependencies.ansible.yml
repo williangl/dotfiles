@@ -1,0 +1,159 @@
+- name: Install Archlinux Base Dependencies
+  hosts: localhost
+  become: true
+  become_user: "{{ lookup('env', 'USER') }}"
+  become_method: sudo
+  ignore_errors: true
+  tasks:
+    # AUR configuration
+
+    # Install Paru AUR Helper
+    # - name: Git clone Paru AUR
+    #   ansible.builtin.git:
+    #     repo: https://aur.archlinux.org/paru.git
+    #     dest: ./paru
+
+    # - name: Install Paru AUR
+    #   ansible.builtin.shell:
+    #     chdir: ./paru
+    #     cmd: makepkg -si --noconfirm
+
+    # Install development dependencies
+    # - name: Install Java
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     update_cache: true
+    #     name:
+    #       - jdk-openjdk
+
+    - name: Install sdkmanager
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      community.general.pacman:
+        executable: yay
+        name:
+          - sdkmanager
+
+    - name: Install FNM
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      community.general.pacman:
+        executable: yay
+        name:
+          - fnm-bin
+
+    # - name: Install Pyenv
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     update_cache: true
+    #     name:
+    #       - pyenv
+
+    # - name: Install PipX
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     update_cache: true
+    #     name:
+    #       - python-pipx
+
+    - name: Install VSCodium
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      community.general.pacman:
+        executable: yay
+        name:
+          - vscodium-bin
+
+    # Install and configure zsh
+    # - name: Install ZSH
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     update_cache: true
+    #     name:
+    #       - zsh
+
+    # - name: Install oh-my-zsh
+    #   ansible.builtin.shell:
+    #     cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    #     executable: /bin/bash
+
+
+    # - name: Install ZSH Autosuggestions
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     name:
+    #       - zsh-autosuggestions
+
+    # - name: Install ZSH Syntax-Highlighting
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     name:
+    #       - zsh-syntax-highlighting
+
+    - name: Install spaceship zsh theme
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      community.general.pacman:
+        executable: yay
+        name:
+          - spaceship-prompt
+
+    # Overide zshrc
+    # - name: Replace .zshrc
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   ansible.builtin.copy:
+    #     src: "./zsh/.zshrc"
+    #     dest: "{{ lookup('env', 'HOME') }}"
+    #     mode: preserve
+
+    # - name: Install Python Poetry
+    #   community.general.pipx:
+    #     name: poetry
+
+    # - name: Configure Poetry Autocompletition On ZSH
+    #   ansible.builtin.shell:
+    #     cmd: |
+    #       mkdir $HOME/.oh-my-zsh/custom/plugins/poetry &&
+    #       poetry completions zsh > $HOME/.oh-my-zsh/custom/plugins/poetry/_poetry
+    #     executable: /bin/bash
+
+    - name: Install Authy 2FA
+      become: true
+      become_user: "{{ lookup('env', 'USER') }}"
+      community.general.pacman:
+        executable: yay
+        name:
+          - authy
+
+    # - name: Install Telegram Desktop
+    #   become: true
+    #   become_user: root
+    #   community.general.pacman:
+    #     name:
+    #       - telegram-desktop
+
+
+    # - name: Install ytmdesktop
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   community.general.pacman:
+    #     extra_args: --noconfirm --ask yes
+    #     executable:yay
+    #     name:
+    #       - ytmdesktop
+
+    # - name: Install stremio
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   community.general.pacman:
+    #     executable:yay
+    #     extra_args: --ask yes
+    #     name:
+    #       - stremio
+    #       - pimpmystremio-bin

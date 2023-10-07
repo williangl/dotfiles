@@ -20,6 +20,14 @@
           - pkg-config
           - fakeroot
 
+    - name: Install Java
+      become: true
+      become_user: root
+      community.general.pacman:
+        update_cache: true
+        name:
+          - jdk-openjdk
+
     - name: Install Terminator
       become: true
       become_user: root
@@ -69,40 +77,40 @@
     #       - vagrant
 
     # Install Paru AUR Helper
-    - name: Git clone Paru AUR
-      ansible.builtin.git:
-        repo: https://aur.archlinux.org/paru.git
-        dest: ./paru
+    # - name: Git clone Paru AUR
+    #   ansible.builtin.git:
+    #     repo: https://aur.archlinux.org/paru.git
+    #     dest: ./paru
 
-    - name: Install Paru AUR
-      ansible.builtin.shell:
-        chdir: ./paru
-        cmd: makepkg -si --noconfirm
+    # - name: Install Paru AUR
+    #   ansible.builtin.shell:
+    #     chdir: ./paru
+    #     cmd: makepkg -si --noconfirm
 
     # Install development dependencies
-    - name: Install Java
-      become: true
-      become_user: "{{ lookup('env', 'USER') }}"
-      kewlfft.aur.aur:
-        use: paru
-        name:
-          - jdk-openjdk
+    # - name: Install Java
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - jdk-openjdk
 
-    - name: Install sdkmanager
-      become: true
-      become_user: "{{ lookup('env', 'USER') }}"
-      kewlfft.aur.aur:
-        use: paru
-        name:
-          - sdkmanager
+    # - name: Install sdkmanager
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - sdkmanager
 
-    - name: Install FNM
-      become: true
-      become_user: "{{ lookup('env', 'USER') }}"
-      kewlfft.aur.aur:
-        use: paru
-        name:
-          - fnm-bin
+    # - name: Install FNM
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - fnm-bin
 
     - name: Install Pyenv
       become: true
@@ -120,13 +128,13 @@
         name:
           - python-pipx
 
-    - name: Install VSCodium
-      become: true
-      become_user: "{{ lookup('env', 'USER') }}"
-      kewlfft.aur.aur:
-        use: paru
-        name:
-          - vscodium-bin
+    # - name: Install VSCodium
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - vscodium-bin
 
     # Install and configure zsh
     - name: Install ZSH
@@ -157,13 +165,13 @@
         name:
           - zsh-syntax-highlighting
 
-    - name: Install spaceship zsh theme
-      become: true
-      become_user: "{{ lookup('env', 'USER') }}"
-      kewlfft.aur.aur:
-        use: paru
-        name:
-          - spaceship-prompt
+    # - name: Install spaceship zsh theme
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - spaceship-prompt
 
     # Overide zshrc
     - name: Replace .zshrc
@@ -184,13 +192,13 @@
     #       poetry completions zsh > $HOME/.oh-my-zsh/custom/plugins/poetry/_poetry
     #     executable: /bin/bash
 
-    - name: Install Authy 2FA
-      become: true
-      become_user: "{{ lookup('env', 'USER') }}"
-      kewlfft.aur.aur:
-        use: paru
-        name:
-          - authy
+    # - name: Install Authy 2FA
+    #   become: true
+    #   become_user: "{{ lookup('env', 'USER') }}"
+    #   kewlfft.aur.aur:
+    #     use: paru
+    #     name:
+    #       - authy
 
     - name: Install Telegram Desktop
       become: true
