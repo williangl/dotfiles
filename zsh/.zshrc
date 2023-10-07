@@ -77,6 +77,7 @@ plugins=(
 	ansible
 	zsh-autosuggestions
 	poetry
+	kubectl
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -125,6 +126,8 @@ ATOM_DEV_RESOURCE_PATH=/opt/atom
 
 # Poetry
 fpath+=~/.zfunc
+# export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -133,6 +136,12 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 # fnm
+export PATH="/tmp/fnm_multishells/2459307_1693988746823/bin":$PATH
+export FNM_MULTISHELL_PATH="/tmp/fnm_multishells/2459307_1693988746823"
+export FNM_DIR="/home/willian/.fnm"
+export FNM_LOGLEVEL="info"
+export FNM_NODE_DIST_MIRROR="https://nodejs.org/dist"
+export FNM_ARCH="x64"
 export PATH=$HOME/.fnm:$PATH
 eval "$(fnm env)"
 
@@ -146,6 +155,22 @@ export PATH=$HOME/.gem/ruby/3.0.0/bin:$PATH
 # Overides cat command to use bat
 alias cat='bat'
 
+# Pipx
+export PIPX_HOME=/home/willian/.local/pipx
+export PIPX_BIN_DIR=/home/willian/.local/bin
+export PATH=$PIPX_BIN_DIR:$PATH
+
+# Pipx autocomplete
+eval "$(register-python-argcomplete pipx)"
+
+# iib-devops-script
+alias login_aws='/home/willian/Documents/IIB-Institut/devops_scripts/login-aws.sh'
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+
+# Created by `pipx` on 2023-05-08 07:54:59
+export PATH="$PATH:/home/willian/.local/bin"
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
